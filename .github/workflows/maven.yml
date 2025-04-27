@@ -1,0 +1,73 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: CI com Cucumber e Publicação de Relatório
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports: [ "4444:4444" ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Instalacao Java 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+
+      - name: Run tests and generate Cucumber HTML
+        run: mvn clean test -Dcucumber.plugin=html:target/cucumber-html-report/index.html
+
+      - name: Archive HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-html-report
+          path: target/cucumber-html-report
+
+  deploy-pages:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false   # para usar token do GITHUB_TOKEN
+          fetch-depth: 0               # precisa do histórico para gh-pages
+
+      - name: Download report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: cucumber-html-report
+          path: cucumber-html-report
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: ./cucumber-html-report
+          # opcional: define branch ou diretório customizado
+          # publish_branch: gh-pages
