@@ -26,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Instalacao Java 21
+      - name: Instalação Java 21
         uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -42,7 +42,7 @@ jobs:
         run: mvn clean test -Dcucumber.plugin=html:target/cucumber-html-report/index.html
 
       - name: Archive HTML report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cucumber-html-report
           path: target/cucumber-html-report
@@ -55,11 +55,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          persist-credentials: false   # para usar token do GITHUB_TOKEN
-          fetch-depth: 0               # precisa do histórico para gh-pages
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Download report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: cucumber-html-report
           path: cucumber-html-report
@@ -67,7 +67,5 @@ jobs:
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./cucumber-html-report
-          # opcional: define branch ou diretório customizado
-          # publish_branch: gh-pages
