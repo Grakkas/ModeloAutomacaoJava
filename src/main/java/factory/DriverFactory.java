@@ -30,7 +30,8 @@ public class DriverFactory {
                 case CHROME:
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.addArguments("--headless=new"); // usar novo headless do Chrome
+                    chromeOptions.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36");
+                    chromeOptions.addArguments("--headless=new");
                     chromeOptions.addArguments("--disable-gpu");
                     chromeOptions.addArguments("--no-sandbox");
                     chromeOptions.addArguments("--disable-dev-shm-usage");
