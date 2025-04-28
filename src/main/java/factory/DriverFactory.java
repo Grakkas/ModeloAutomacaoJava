@@ -16,6 +16,8 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class DriverFactory {
 
@@ -28,6 +30,13 @@ public class DriverFactory {
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--start-maximized", "--disable-notifications");
+
+                    try {
+                        Path tempDir = Files.createTempDirectory("chrome-profile");
+                        chromeOptions.addArguments("user-data-dir=" + tempDir.toAbsolutePath());
+                    } catch (IOException e) {
+                        throw new RuntimeException("Não foi possível criar diretório temporário para o perfil do Chrome: " + e.getMessage());
+                    }
                     driver.set(new ChromeDriver(chromeOptions));
                     return true;
 
