@@ -77,6 +77,11 @@ public class UtilPages {
         js.executeScript("window.open()");
     }
 
+    public WebElement scrollToElement(By element) {
+        js.executeScript("const element = arguments[0];" + "const rect = element.getBoundingClientRect();" + "window.scrollBy({ " + "   top: rect.top + window.scrollY - (window.innerHeight / 2), " + "   behavior: 'instant' " + "});", waitForElement(element));
+        return waitForElement(element);
+    }
+
     public String getNewTempMail() {
         openNewTab();
         tabs = new ArrayList<>(driver.getWindowHandles());

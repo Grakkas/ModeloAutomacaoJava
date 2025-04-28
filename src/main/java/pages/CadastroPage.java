@@ -82,7 +82,7 @@ public class CadastroPage extends UtilPages {
     }
 
     public boolean preencherFormularioAdicionarEndereco() {
-        waitForElement(inputCEP).click();
+        scrollToElement(inputCEP).click();
         waitForElement(inputCEP).sendKeys("01018-020" + Keys.TAB);
         sleep(1000);
 

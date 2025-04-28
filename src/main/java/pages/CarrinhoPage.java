@@ -56,7 +56,7 @@ public class CarrinhoPage extends UtilPages {
         while (isElementFound(textCarregando, Duration.ofSeconds(5))) {
             sleep(500);
         }
-        waitForElement(buttonIrParaPagamento).click();
+        scrollToElement(buttonIrParaPagamento).click();
         waitForElement(textFormaDePagamento);
         return true;
     }
