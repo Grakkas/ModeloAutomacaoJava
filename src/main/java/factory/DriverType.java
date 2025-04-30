@@ -5,4 +5,5 @@ public enum DriverType {
     FIREFOX,
     EDGE,
     SAFARI,
+    ANDROID
 }

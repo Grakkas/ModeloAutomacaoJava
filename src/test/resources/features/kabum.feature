@@ -1,6 +1,6 @@
 #language: pt
 
-@kabum
+@web
 Funcionalidade: Demonstrar o funcionamento de uma automação WEB
 
   @cadastrar_cliente
